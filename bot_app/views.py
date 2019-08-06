@@ -35,7 +35,7 @@ def get_name_surname(message):
             new_user.save()
             bot.send_message(message.chat.id, 'Приятно познакомиться, {}'.format(message.text))
             bot.send_message(message.chat.id, 'И фамилия у тебя тоже наверное есть?')
-        else:
+        elif update_user.name is True and update_user.surname is None:
             update_user.surname = message.text
             update_user.save(update_fields=['surname'])
             bot.send_message(message.chat.id, '{name} {surname} - это звучит гордо!'.format(name=update_user.name,
