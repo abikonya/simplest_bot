@@ -48,7 +48,7 @@ def get_name_surname(message):
 
 @bot.message_handler(func=lambda message: re.search(r'^[0-9]+$', message.text))
 def end(message):
-    update_user = BotUsers.objects.last('id')
+    update_user = BotUsers.objects.filter(telegram_id=message.chat.id).latest('id')
     update_user.age = message.text
     update_user.save(update_fields=['age'])
     bot.send_message(message.chat.id, 'Ну что ж, приятно познакомиться {name} {surname}. Рад что тебе {age}'.format(name=update_user.name,
