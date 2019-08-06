@@ -30,7 +30,7 @@ def start(message):
 def get_name_surname(message):
     try:
         update_user = BotUsers.objects.filter(telegram_id=message.chat.id).latest('id')
-        if update_user.age is True:
+        if update_user.age is not None:
             new_user = BotUsers(telegram_id=message.chat.id, name=message.text)
             new_user.save()
             bot.send_message(message.chat.id, 'Приятно познакомиться, {}'.format(message.text))
