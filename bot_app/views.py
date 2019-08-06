@@ -30,17 +30,19 @@ def start(message):
 def get_name_surname(message):
     try:
         update_user = BotUsers.objects.filter(telegram_id=message.chat.id).latest('id')
-        if update_user.age is not None:
+        if update_user.age:
             new_user = BotUsers(telegram_id=message.chat.id, name=message.text)
             new_user.save()
             bot.send_message(message.chat.id, 'Приятно познакомиться, {}'.format(message.text))
             bot.send_message(message.chat.id, 'И фамилия у тебя тоже наверное есть?')
-        elif update_user.name is True and update_user.surname is None:
+        elif update_user.name and update_user.surname is None:
             update_user.surname = message.text
             update_user.save(update_fields=['surname'])
             bot.send_message(message.chat.id, '{name} {surname} - это звучит гордо!'.format(name=update_user.name,
                                                                                             surname=update_user.surname))
             bot.send_message(message.chat.id, 'А сколько лет тебе?')
+        else:
+            return Exception
     except:
         new_user = BotUsers(telegram_id=message.chat.id, name=message.text)
         new_user.save()
